@@ -1,0 +1,2397 @@
+/* =========================================
+   사용자 폰트
+========================================= */
+
+@font-face {
+    font-family: "Ramche";
+
+    src:
+        url("Font/Ramche.ttf")
+        format("truetype");
+
+    font-weight: normal;
+    font-style: normal;
+
+    font-display: swap;
+}
+
+
+/* =========================================
+   전역 변수
+========================================= */
+
+:root {
+    --game-scale: 1;
+}
+
+
+/* =========================================
+   기본 설정
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        #101010;
+
+    font-family:
+        "Ramche",
+        "Malgun Gothic",
+        sans-serif;
+
+    touch-action:
+        manipulation;
+}
+
+
+button,
+input,
+label,
+select,
+textarea {
+    font-family:
+        inherit;
+}
+
+
+button {
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+
+/* =========================================
+   브라우저 전체 표시 영역
+========================================= */
+
+#gameViewport {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    background:
+        #101010;
+}
+
+
+/* =========================================
+   게임 전체 확대·축소 영역
+========================================= */
+
+#gameScaler {
+    position: relative;
+
+    width: 1600px;
+    height: 900px;
+
+    flex:
+        0
+        0
+        auto;
+
+    /*
+    JS가 계산한 확대·축소 비율
+    */
+
+    transform:
+        scale(
+            var(--game-scale, 0)
+        );
+
+    transform-origin:
+        center
+        center;
+
+    image-rendering:
+        pixelated;
+
+    /*
+    첫 크기 계산 전에는 숨긴다.
+    1600×900 원본 화면이 순간적으로
+    크게 보이는 현상 방지.
+    */
+
+    visibility:
+        hidden;
+
+    opacity:
+        0;
+}
+
+
+/*
+JS가 첫 화면 배율 계산을 마친 뒤 추가하는 클래스
+*/
+
+#gameScaler.scale-ready {
+    visibility:
+        visible;
+
+    opacity:
+        1;
+}
+
+
+/* =========================================
+   실제 게임 화면
+========================================= */
+
+#gameScreen {
+    position: relative;
+
+    width: 1600px;
+    height: 900px;
+
+    overflow: hidden;
+
+    background-color:
+        #416793;
+
+    background-image:
+        url("Pictures/GPT_Backgrond_2.png");
+
+    background-repeat:
+        no-repeat;
+
+    background-position:
+        center center;
+
+    /*
+    게임 배경 전체를
+    1600 × 900에 맞춘다.
+    */
+
+    background-size:
+        100% 100%;
+
+    image-rendering:
+        pixelated;
+}
+
+/* 바닥 경계선 */
+/* 
+#gameScreen::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 72%;
+
+    height: 6px;
+
+    background:
+        #293f5e;
+
+    z-index: 1;
+} */
+
+
+/* =========================================
+   숨김
+========================================= */
+
+.hidden {
+    display:
+        none !important;
+}
+
+
+/* =========================================
+   식물 환자
+========================================= */
+
+#plant {
+    position: absolute;
+
+    left: -160px;
+    bottom: 190px;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: 0;
+    outline: 0;
+
+    overflow: visible;
+
+    background-color:
+        transparent;
+
+    background-image:
+        var(--plant-image);
+
+    background-repeat:
+        no-repeat;
+
+    background-position:
+        0 0;
+
+    image-rendering:
+        pixelated;
+
+    transform:
+        translateX(-50%)
+        scale(
+            var(
+                --plant-scale,
+                6.5
+            )
+        );
+
+    transform-origin:
+        center bottom;
+
+    animation-name:
+        plantSpriteAnimation;
+
+    animation-duration:
+        var(
+            --animation-speed,
+            0.7s
+        );
+
+    animation-timing-function:
+        steps(
+            var(
+                --frame-count,
+                6
+            )
+        );
+
+    animation-iteration-count:
+        infinite;
+
+    cursor:
+        pointer;
+
+    z-index: 5;
+}
+
+
+#plant:hover {
+    filter:
+        brightness(1.08);
+}
+
+
+#plant:focus,
+#plant:focus-visible {
+    outline:
+        none;
+}
+
+
+/* 고온 증상 */
+
+#plant.symptom-hot {
+    filter:
+        hue-rotate(-55deg)
+        saturate(1.25)
+        brightness(1.04);
+}
+
+
+/* 저온 증상 */
+
+#plant.symptom-cold {
+    filter:
+        hue-rotate(85deg)
+        saturate(1.18)
+        brightness(1.06);
+}
+
+
+
+
+/*
+기존에 이미 .hidden이 있다면
+이 블록은 중복으로 넣지 않아도 된다.
+*/
+
+.hidden {
+    display: none !important;
+}
+
+/* 스프라이트 애니메이션 */
+
+@keyframes plantSpriteAnimation {
+
+    from {
+        background-position-x:
+            0;
+    }
+
+    to {
+        background-position-x:
+            calc(
+                var(
+                    --sheet-width,
+                    192px
+                )
+                *
+                -1
+            );
+    }
+
+}
+/* =========================================
+   식물 선글라스
+========================================= */
+
+#plantSunglasses {
+    position: absolute;
+
+    /*
+    32 × 32px 식물 프레임 안에서의 위치
+    */
+
+    left: 50%;
+    top: 28%;
+
+    /*
+    식물 버튼 전체가 확대되므로
+    이 값도 화면에서는 함께 확대된다.
+    */
+
+    width: 22px;
+    height: auto;
+
+    display: block;
+
+    margin: 0;
+    padding: 0;
+
+    transform:
+        translateX(-50%);
+
+    transform-origin:
+        center center;
+
+    pointer-events:
+        none;
+
+    user-select:
+        none;
+
+    image-rendering:
+        pixelated;
+
+    z-index:
+        999;
+}
+
+
+/*
+JS가 hidden을 제거하면 표시되고,
+hidden이 있으면 확실하게 숨긴다.
+*/
+
+#plantSunglasses.hidden {
+    display:
+        none !important;
+}
+
+
+/* =========================================
+   말풍선
+
+   Unity Top Center Anchor 대응
+========================================= */
+
+#speechBubble {
+    position: absolute;
+
+    top: 24px;
+    left: 50%;
+
+    width: 600px;
+    height: 260px;
+
+    padding:
+        58px
+        75px
+        68px;
+
+    transform:
+        translateX(-50%);
+
+    background-image:
+        url(
+            "Pictures/TalkBubble_2.png"
+        );
+
+    background-repeat:
+        no-repeat;
+
+    background-position:
+        center;
+
+    background-size:
+        100%
+        100%;
+
+    image-rendering:
+        pixelated;
+
+    z-index: 20;
+}
+
+
+/* 말풍선 텍스트 */
+
+#speechText {
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    color:
+        #333333;
+
+    /*
+    기존보다 확대된 크기
+    */
+
+    font-size:
+        42px;
+
+    font-weight:
+        bold;
+
+    line-height:
+        1.45;
+
+    word-break:
+        keep-all;
+
+    overflow-wrap:
+        break-word;
+}
+
+
+/* =========================================
+   치료 후 후기
+========================================= */
+
+#patientReview {
+    position: absolute;
+
+    left: 800px;
+
+    bottom: 450px;
+
+    transform:
+        translateX(-50%);
+
+    max-width:
+        500px;
+
+    padding:
+        10px
+        18px;
+
+    border:
+        4px solid
+        white;
+
+    border-radius:
+        8px;
+
+    color:
+        white;
+
+    background:
+        rgba(
+            20,
+            28,
+            40,
+            0.88
+        );
+
+    font-size:
+        30px;
+
+    line-height:
+        1.35;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+    pointer-events:
+        none;
+
+    z-index: 18;
+}
+
+
+/* 정답 후기 */
+
+#patientReview.review-good {
+    color:
+        #efffe9;
+
+    border-color:
+        #9bf239;
+
+    background:
+        rgba(
+            36,
+            105,
+            48,
+            0.92
+        );
+}
+
+
+/* 오답 후기 */
+
+#patientReview.review-bad {
+    color:
+        #fff1ef;
+
+    border-color:
+        #ff7770;
+
+    background:
+        rgba(
+            115,
+            38,
+            38,
+            0.92
+        );
+}
+
+
+/* =========================================
+   디버그 패널
+
+   Unity Top Left Anchor 대응
+========================================= */
+
+#debugPanel {
+    position: absolute;
+
+    top: 24px;
+    left: 24px;
+
+    min-width:
+        320px;
+
+    padding:
+        16px
+        20px;
+
+    border:
+        3px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
+
+    color:
+        white;
+
+    background:
+        rgba(
+            15,
+            23,
+            36,
+            0.88
+        );
+
+    font-size:
+        24px;
+
+    line-height:
+        1.65;
+
+    z-index: 100;
+}
+
+
+#debugPanel strong {
+    color:
+        #a4f640;
+}
+
+
+.debugHelp {
+    margin-top:
+        6px;
+
+    color:
+        #b9c4d2;
+
+    font-size:
+        19px;
+}
+
+
+/* =========================================
+   상태바 임시 숨김
+========================================= */
+
+#statusPanel {
+    display:
+        none;
+}
+
+
+
+/* =========================================
+   진료하기 버튼
+
+   Unity Bottom Right Anchor 대응
+========================================= */
+
+#nextButton {
+    position: absolute;
+
+    right: 38px;
+    bottom: 34px;
+
+    width: 225px;
+    height: 78px;
+
+    border:
+        6px solid
+        #111111;
+
+    color:
+        #111111;
+
+    background:
+        #9bf239;
+
+    font-size:
+        38px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+
+    z-index: 15;
+}
+
+
+#nextButton:hover:not(:disabled) {
+    filter:
+        brightness(1.07);
+}
+
+
+#nextButton:active:not(:disabled) {
+    transform:
+        translateY(2px);
+}
+
+
+#nextButton:disabled {
+    opacity:
+        0.4;
+
+    cursor:
+        default;
+}
+
+
+/* =========================================
+   게임 내부 전체 화면 팝업
+
+   Unity Stretch Anchor 대응
+========================================= */
+
+.gameOverlay,
+.overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        rgba(
+            15,
+            22,
+            32,
+            0.72
+        );
+
+    z-index: 500;
+}
+
+
+/* =========================================
+   체크리스트 / 상점 공통 종이
+========================================= */
+
+#checklistPaper {
+    position: relative;
+
+    width: 650px;
+    height: 820px;
+
+    padding:
+        88px
+        58px
+        52px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    color:
+        #302b25;
+
+    background-image:
+        url(
+            "Pictures/Paper.png"
+        );
+
+    background-repeat:
+        no-repeat;
+
+    background-position:
+        center;
+
+    background-size:
+        100%
+        100%;
+
+    image-rendering:
+        pixelated;
+
+    filter:
+        drop-shadow(
+            10px
+            14px
+            0
+            rgba(
+                0,
+                0,
+                0,
+                0.3
+            )
+        );
+}
+
+
+/* 제목 */
+
+#checklistTitle,
+#shopTitle {
+    margin:
+        0
+        0
+        8px;
+
+    text-align:
+        center;
+
+    font-size:
+        46px;
+}
+
+
+/* 안내문 */
+
+#checklistGuide,
+#shopGuide {
+    margin:
+        0
+        0
+        18px;
+
+    color:
+        #655c50;
+
+    text-align:
+        center;
+
+    font-size:
+        23px;
+}
+
+
+/* =========================================
+   치료 목록 스크롤
+========================================= */
+
+#treatmentList {
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    margin:
+        8px
+        0
+        20px;
+
+    padding:
+        4px
+        16px
+        20px
+        0;
+
+    overflow-y:
+        auto;
+
+    overflow-x:
+        hidden;
+
+    overscroll-behavior:
+        contain;
+
+    scrollbar-gutter:
+        stable;
+}
+
+
+/* 치료 항목 */
+
+.treatmentOption {
+    position: relative;
+
+    flex:
+        0
+        0
+        auto;
+
+    min-height:
+        68px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    padding:
+        8px
+        12px;
+
+    border-bottom:
+        3px dashed
+        rgba(
+            92,
+            79,
+            62,
+            0.45
+        );
+
+    cursor:
+        pointer;
+
+    user-select:
+        none;
+}
+
+
+.treatmentOption:hover {
+    background:
+        rgba(
+            151,
+            125,
+            80,
+            0.1
+        );
+}
+
+
+/* 기본 체크박스 숨김 */
+
+.treatmentOption input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events:
+        none;
+}
+
+
+/* 커스텀 체크박스 */
+
+.customCheckbox {
+    position: relative;
+
+    flex-shrink:
+        0;
+
+    width: 38px;
+    height: 38px;
+
+    border:
+        4px solid
+        #40392f;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.42
+        );
+}
+
+
+/* 체크 표시 */
+
+.treatmentOption
+input:checked
++
+.customCheckbox::after {
+    content: "✓";
+
+    position: absolute;
+
+    left: 50%;
+    top: 43%;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    color:
+        #24713a;
+
+    font-size:
+        39px;
+
+    font-weight:
+        900;
+}
+
+
+/* 선택한 치료 이름 */
+
+.treatmentOption
+input:checked
+~
+.treatmentName {
+    color:
+        #24713a;
+
+    text-decoration:
+        underline;
+
+    text-decoration-thickness:
+        3px;
+}
+
+
+.treatmentName {
+    font-size:
+        32px;
+
+    font-weight:
+        bold;
+
+    line-height:
+        1.2;
+}
+
+
+/* =========================================
+   체크리스트 결과 메시지
+========================================= */
+
+#checklistMessage {
+    flex-shrink:
+        0;
+
+    min-height:
+        38px;
+
+    margin:
+        0
+        0
+        10px;
+
+    padding:
+        4px
+        8px;
+
+    color:
+        #b23b36;
+
+    text-align:
+        center;
+
+    font-size:
+        25px;
+
+    font-weight:
+        bold;
+
+    line-height:
+        1.3;
+}
+
+
+/* =========================================
+   체크리스트 하단 버튼
+========================================= */
+
+#checklistButtons {
+    position: static;
+
+    flex-shrink:
+        0;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1.25fr;
+
+    gap: 14px;
+}
+
+
+#checklistButtons button,
+#closeShopButton {
+    min-height:
+        62px;
+
+    border:
+        4px solid
+        #332e28;
+
+    color:
+        #2c2823;
+
+    font-size:
+        28px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+}
+
+
+#closeChecklistButton,
+#closeShopButton {
+    background:
+        #d8cfbd;
+}
+
+
+#confirmTreatmentButton {
+    background:
+        #9ce95d;
+}
+
+
+#checklistButtons button:hover,
+#closeShopButton:hover {
+    filter:
+        brightness(1.06);
+}
+
+
+/* =========================================
+   픽셀 스타일 스크롤바
+========================================= */
+
+#treatmentList::-webkit-scrollbar,
+#shopItemList::-webkit-scrollbar {
+    width: 14px;
+}
+
+
+#treatmentList::-webkit-scrollbar-track,
+#shopItemList::-webkit-scrollbar-track {
+    border:
+        3px solid
+        rgba(
+            74,
+            65,
+            51,
+            0.45
+        );
+
+    background:
+        rgba(
+            104,
+            92,
+            72,
+            0.15
+        );
+}
+
+
+#treatmentList::-webkit-scrollbar-thumb,
+#shopItemList::-webkit-scrollbar-thumb {
+    border:
+        3px solid
+        #4c4335;
+
+    background:
+        #8b7a58;
+}
+
+
+#treatmentList::-webkit-scrollbar-thumb:hover,
+#shopItemList::-webkit-scrollbar-thumb:hover {
+    background:
+        #a08b62;
+}
+
+
+/* =========================================
+   모바일 세로 화면 안내
+========================================= */
+
+#rotateNotice {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    flex-direction:
+        column;
+
+    gap: 20px;
+
+    padding:
+        35px;
+
+    color:
+        white;
+
+    background:
+        #15243a;
+
+    text-align:
+        center;
+
+    font-size:
+        24px;
+
+    line-height:
+        1.6;
+
+    z-index:
+        9999;
+}
+
+
+.rotateIcon {
+    font-size:
+        72px;
+
+    animation:
+        rotatePhone
+        1.5s
+        ease-in-out
+        infinite
+        alternate;
+}
+
+
+@keyframes rotatePhone {
+
+    from {
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            rotate(90deg);
+    }
+
+}
+
+
+/*
+모바일 터치 장치가 세로 방향일 때만 표시
+*/
+
+@media
+(
+    orientation: portrait
+)
+and
+(
+    pointer: coarse
+) {
+
+    #rotateNotice {
+        display:
+            flex;
+    }
+
+}
+
+/* =========================================
+   메인 메뉴 화면
+========================================= */
+
+#mainMenuScreen {
+    position: absolute;
+
+    inset: 0;
+
+    width: 1600px;
+    height: 900px;
+
+    overflow: hidden;
+
+    background-color:
+        #9db6ab;
+
+    background-image:
+        url("Pictures/GPT_MainBackground.png");
+
+    background-repeat:
+        no-repeat;
+
+    background-position:
+        center center;
+
+    /*
+    원본 이미지 전체를
+    1600 × 900 화면에 정확하게 맞춘다.
+    */
+
+    background-size:
+        100% 100%;
+
+    image-rendering:
+        pixelated;
+
+    z-index:
+        1000;
+}
+
+
+/* =========================================
+   START 버튼
+========================================= */
+
+#startButton {
+    position: absolute;
+
+    left: 50%;
+    top: 76%;
+
+    width: 360px;
+    height: 105px;
+
+    padding: 0;
+
+    transform:
+        translate(-50%, -50%);
+
+    border:
+        7px solid
+        #111111;
+
+    color:
+        #111111;
+
+    background:
+        #98f238;
+
+    box-shadow:
+        9px
+        9px
+        0
+        rgba(
+            17,
+            17,
+            17,
+            0.35
+        );
+
+    font-size:
+        55px;
+
+    font-weight:
+        normal;
+
+    letter-spacing:
+        4px;
+
+    cursor:
+        pointer;
+
+    z-index:
+        10;
+}
+
+
+#startButton:hover {
+    filter:
+        brightness(1.08);
+}
+
+
+/*
+위치가 흔들리거나 커지지 않게
+hover에서는 transform을 건드리지 않는다.
+*/
+
+#startButton:active {
+    transform:
+        translate(-50%, -47%);
+
+    box-shadow:
+        4px
+        4px
+        0
+        rgba(
+            17,
+            17,
+            17,
+            0.35
+        );
+}
+
+
+#startButton:focus {
+    outline:
+        none;
+}
+
+
+#startButton:focus-visible {
+    outline:
+        5px solid
+        white;
+
+    outline-offset:
+        5px;
+}
+
+/* =========================================
+   스테이지 진행 UI
+========================================= */
+
+#stageProgressUI {
+    position: absolute;
+
+    left: 38px;
+    top: 38px;
+
+    min-width: 260px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    padding:
+        14px
+        22px;
+
+    border:
+        5px solid
+        #19251c;
+
+    color:
+        white;
+
+    background:
+        rgba(
+            46,
+            115,
+            61,
+            0.92
+        );
+
+    box-shadow:
+        8px
+        8px
+        0
+        rgba(
+            10,
+            20,
+            14,
+            0.35
+        );
+
+    text-align:
+        center;
+
+    z-index:
+        30;
+}
+
+
+#currentStageText {
+    font-size:
+        34px;
+
+    line-height:
+        1;
+}
+
+
+#patientProgressText {
+    font-size:
+        27px;
+
+    line-height:
+        1;
+}
+/* =========================================
+   스테이지 시작·종료 오버레이
+========================================= */
+
+#stageOverlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    background:
+        rgba(
+            16,
+            25,
+            34,
+            0.7
+        );
+
+    z-index:
+        2000;
+
+    pointer-events:
+        all;
+}
+
+
+#stageOverlayContent {
+    min-width:
+        560px;
+
+    padding:
+        55px
+        75px;
+
+    border:
+        8px solid
+        white;
+
+    color:
+        white;
+
+    background:
+        rgba(
+            29,
+            86,
+            48,
+            0.96
+        );
+
+    box-shadow:
+        14px
+        14px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.38
+        );
+
+    text-align:
+        center;
+
+    image-rendering:
+        pixelated;
+}
+
+
+#stageOverlayTitle {
+    margin:
+        0;
+
+    font-size:
+        90px;
+
+    font-weight:
+        normal;
+
+    line-height:
+        1.1;
+
+    letter-spacing:
+        4px;
+}
+
+
+#stageOverlayDescription {
+    margin:
+        28px
+        0
+        0;
+
+    font-size:
+        34px;
+
+    line-height:
+        1.4;
+}
+/* =========================================
+   스테이지 설명
+========================================= */
+
+#stageOverlayDescription {
+    margin:
+        28px
+        0
+        0;
+
+    color:
+        white;
+
+    font-size:
+        38px;
+
+    line-height:
+        1.4;
+
+    text-align:
+        center;
+}
+
+
+/* =========================================
+   스테이지 해금 영역
+========================================= */
+
+#stageUnlockArea {
+    margin-top:
+        28px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+}
+
+
+#stageUnlockLabel {
+    margin:
+        0;
+
+    color:
+        #d8e6d7;
+
+    font-size:
+        27px;
+
+    line-height:
+        1.3;
+}
+
+
+#stageUnlockIcon {
+    width:
+        115px;
+
+    height:
+        115px;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    border:
+        5px solid
+        white;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.14
+        );
+
+    font-family:
+        "Segoe UI Emoji",
+        "Apple Color Emoji",
+        sans-serif;
+
+    font-size:
+        70px;
+
+    line-height:
+        1;
+
+    image-rendering:
+        pixelated;
+}
+
+
+#stageUnlockName {
+    margin:
+        0;
+
+    color:
+        white;
+
+    font-size:
+        35px;
+
+    line-height:
+        1.2;
+}
+
+
+/* =========================================
+   다음 스테이지 시작 버튼
+========================================= */
+
+#stageContinueButton {
+    width:
+        125px;
+
+    height:
+        86px;
+
+    margin:
+        30px
+        auto
+        0;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    padding:
+        0;
+
+    border:
+        6px solid
+        #111111;
+
+    color:
+        #111111;
+
+    background:
+        #98f238;
+
+    box-shadow:
+        7px
+        7px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+    font-family:
+        inherit;
+
+    font-size:
+        50px;
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+
+    image-rendering:
+        pixelated;
+}
+
+
+#stageContinueButton:hover {
+    transform:
+        translateY(-4px);
+
+    filter:
+        brightness(1.08);
+}
+
+
+#stageContinueButton:active {
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        3px
+        3px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+}
+
+
+#stageContinueButton:disabled {
+    opacity:
+        0.45;
+
+    cursor:
+        default;
+}
+
+/* =========================================
+   중앙 하단 치료 완료 인원
+========================================= */
+
+#centerPatientProgress {
+    position: absolute;
+
+    /*
+    게임 화면 가로 중앙
+    */
+
+    left: 50%;
+
+    /*
+    아래쪽에서 35px 위에 배치
+    */
+
+    bottom: 35px;
+
+    transform:
+        translateX(-50%);
+
+    min-width:
+        190px;
+
+    padding:
+        10px
+        24px;
+
+    border:
+        5px solid
+        #16261c;
+
+    color:
+        white;
+
+    background:
+        rgba(
+            35,
+            101,
+            53,
+            0.92
+        );
+
+    box-shadow:
+        7px
+        7px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.3
+        );
+
+    font-size:
+        40px;
+
+    line-height:
+        1;
+
+    text-align:
+        center;
+
+    pointer-events:
+        none;
+
+    z-index:
+        25;
+
+    image-rendering:
+        pixelated;
+}
+
+
+#centerPatientProgressText {
+    display:
+        block;
+}
+/* =========================================
+   스테이지 해금 아이템 목록
+========================================= */
+
+#stageUnlockItems {
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 40px;
+}
+
+
+.stageUnlockItem {
+    width: 170px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.stageUnlockItemIcon {
+    width: 115px;
+    height: 115px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 5px solid white;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.14
+        );
+
+    font-family:
+        "Segoe UI Emoji",
+        "Apple Color Emoji",
+        sans-serif;
+
+    font-size: 68px;
+    line-height: 1;
+
+    image-rendering: pixelated;
+}
+
+
+.stageUnlockItemName {
+    color: white;
+
+    font-size: 31px;
+    line-height: 1.2;
+
+    text-align: center;
+}
+/* =========================================
+   위급 환자 경고 화면
+========================================= */
+
+#emergencyWarning {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        rgba(
+            130,
+            0,
+            0,
+            0.45
+        );
+
+    z-index: 3000;
+
+    animation:
+        emergencyFlash
+        0.35s
+        steps(2)
+        infinite;
+}
+
+
+#emergencyWarningBox {
+    min-width: 720px;
+
+    padding: 55px 70px;
+
+    border: 8px solid white;
+
+    color: white;
+
+    background:
+        rgba(
+            145,
+            0,
+            0,
+            0.96
+        );
+
+    text-align: center;
+
+    box-shadow:
+        14px
+        14px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.4
+        );
+}
+
+
+#emergencyWarningBox h2 {
+    margin: 0;
+
+    font-size: 72px;
+    font-weight: normal;
+}
+
+
+#emergencyWarningBox p {
+    margin:
+        25px
+        0
+        0;
+
+    font-size: 40px;
+}
+
+
+@keyframes emergencyFlash {
+
+    0% {
+        background:
+            rgba(
+                130,
+                0,
+                0,
+                0.3
+            );
+    }
+
+    100% {
+        background:
+            rgba(
+                255,
+                0,
+                0,
+                0.58
+            );
+    }
+}
+/* =========================================
+   AED 미니게임
+========================================= */
+
+#aedMiniGame {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2500;
+
+    pointer-events: none;
+}
+
+
+/* 스킬 체크 영역 */
+
+#aedSkillCheck {
+    position: absolute;
+
+    left: 50%;
+    bottom: 75px;
+
+    transform:
+        translateX(-50%);
+
+    width: 650px;
+
+    padding:
+        25px
+        30px;
+
+    border:
+        6px solid
+        white;
+
+    background:
+        rgba(
+            18,
+            27,
+            35,
+            0.94
+        );
+
+    text-align: center;
+
+    pointer-events: auto;
+}
+
+
+#aedGuideText {
+    margin:
+        0
+        0
+        18px;
+
+    color: white;
+
+    font-size: 28px;
+}
+
+
+#aedTimingBar {
+    position: relative;
+
+    width: 100%;
+    height: 58px;
+
+    overflow: hidden;
+
+    border:
+        6px solid
+        #111111;
+
+    background:
+        #d8d8d8;
+}
+
+
+/* 성공 구간 */
+
+#aedSuccessZone {
+    position: absolute;
+
+    left: 40%;
+    top: 0;
+
+    width: 20%;
+    height: 100%;
+
+    background:
+        #7ee73d;
+}
+
+
+/* 움직이는 막대 */
+
+#aedTimingMarker {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 14px;
+    height: 100%;
+
+    background:
+        #e32626;
+
+    box-shadow:
+        0
+        0
+        0
+        3px
+        white;
+}
+
+
+#aedActionButton {
+    width: 220px;
+    height: 72px;
+
+    margin-top: 20px;
+
+    border:
+        6px solid
+        #111111;
+
+    background:
+        #98f238;
+
+    color:
+        #111111;
+
+    font-family: inherit;
+
+    font-size: 34px;
+
+    cursor: pointer;
+}
+
+
+#aedResultText {
+    min-height: 42px;
+
+    margin:
+        15px
+        0
+        0;
+
+    color: white;
+
+    font-size: 30px;
+}
+
+
+/* =========================================
+   위급 환자 HP 세로 게이지
+========================================= */
+
+#emergencyHpUI {
+    position: absolute;
+
+    /*
+    식물 중앙 좌표가 약 800px이므로
+    식물의 오른쪽에 배치한다.
+    */
+
+    left: 1010px;
+    bottom: 245px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;
+
+    pointer-events: none;
+}
+
+
+#emergencyHpLabel {
+    color: white;
+
+    font-size: 28px;
+
+    text-shadow:
+        3px
+        3px
+        0
+        #111111;
+}
+
+
+#emergencyHpBar {
+    position: relative;
+
+    width: 64px;
+    height: 300px;
+
+    overflow: hidden;
+
+    border:
+        7px solid
+        #111111;
+
+    background:
+        rgba(
+            20,
+            20,
+            20,
+            0.85
+        );
+}
+
+
+/*
+아래에서 위로 차오르기 위해
+bottom: 0을 사용한다.
+*/
+
+#emergencyHpFill {
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 10%;
+
+    background:
+        #d93434;
+
+    transition:
+        height
+        0.3s
+        ease;
+}
+
+
+#emergencyHpText {
+    color: white;
+
+    font-size: 26px;
+
+    text-shadow:
+        3px
+        3px
+        0
+        #111111;
+}
+
+/* =========================================
+   게임 오버 다시하기 버튼
+========================================= */
+
+#restartGameButton {
+    min-width: 300px;
+
+    height: 85px;
+
+    margin:
+        32px
+        auto
+        0;
+
+    padding:
+        0
+        35px;
+
+    border:
+        6px solid
+        #111111;
+
+    color:
+        #111111;
+
+    background:
+        #98f238;
+
+    box-shadow:
+        7px
+        7px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+    font-family:
+        inherit;
+
+    font-size:
+        38px;
+
+    cursor:
+        pointer;
+}
+
+
+#restartGameButton:hover {
+    transform:
+        translateY(-4px);
+
+    filter:
+        brightness(1.08);
+}
+
+
+#restartGameButton:active {
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        3px
+        3px
+        0
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+}

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Dr.Plant</title>
+    <link rel="icon" href="data:,">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+    <!-- =====================================
+         브라우저 전체 표시 영역
+    ====================================== -->
+
+    <div id="gameViewport">
+
+        <!--
+        메인 메뉴와 실제 게임을 모두
+        1600 × 900 기준으로 확대·축소한다.
+        -->
+
+        <div id="gameScaler">
+
+
+            <!-- =====================================
+                 메인 메뉴 화면
+            ====================================== -->
+
+            <section
+                id="mainMenuScreen"
+                aria-label="Dr.Plant 메인 메뉴"
+            >
+
+                <!--
+                MainBackground.png는 CSS의
+                background-image로 표시한다.
+                HTML에 img 태그를 따로 넣지 않는다.
+                -->
+
+                <button
+                    id="startButton"
+                    type="button"
+                >
+                    START
+                </button>
+
+            </section>
+
+
+            <!-- =====================================
+                 실제 게임 화면
+            ====================================== -->
+
+            <main
+                id="gameScreen"
+                class="hidden"
+            >
+                <!-- =====================================
+                    스테이지 진행 정보
+                ====================================== -->
+
+                <div id="stageProgressUI">
+                    <span id="currentStageText">
+                        Stage 1
+                    </span>
+
+                    <span id="patientProgressText">
+                        0 / 7
+                    </span>
+                </div>
+                <!-- =====================================
+                    위급 환자 경고
+                ====================================== -->
+
+                <div
+                    id="emergencyWarning"
+                    class="hidden"
+                    aria-live="assertive"
+                >
+                    <div id="emergencyWarningBox">
+
+                        <h2>
+                            ⚠ 위급 환자 발생!!
+                        </h2>
+
+                        <p>
+                            환자를 살리세요!
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <!-- =====================================
+                    AED 미니게임
+                ====================================== -->
+
+                <div
+                    id="aedMiniGame"
+                    class="hidden"
+                >
+                    <!-- 스킬 체크 -->
+
+                    <div id="aedSkillCheck">
+
+                        <p id="aedGuideText">
+                            초록색 구간에서 SPACE 또는 클릭!
+                        </p>
+
+                        <div id="aedTimingBar">
+
+                            <div id="aedSuccessZone"></div>
+
+                            <div id="aedTimingMarker"></div>
+
+                        </div>
+
+                        <button
+                            id="aedActionButton"
+                            type="button"
+                        >
+                            AED!
+                        </button>
+
+                        <p
+                            id="aedResultText"
+                            aria-live="polite"
+                        ></p>
+
+                    </div>
+
+
+                    <!-- 식물 오른쪽 세로 HP 바 -->
+
+                    <div id="emergencyHpUI">
+
+                        <div id="emergencyHpLabel">
+                            HP
+                        </div>
+
+                        <div id="emergencyHpBar">
+
+                            <div id="emergencyHpFill"></div>
+
+                        </div>
+
+                        <div id="emergencyHpText">
+                            10%
+                        </div>
+
+                    </div>
+                </div>
+                <!-- =====================================
+                    스테이지 시작 / 해금 화면
+                ====================================== -->
+
+                <div
+                    id="stageOverlay"
+                    class="hidden"
+                    aria-live="assertive"
+                >
+                    <div id="stageOverlayContent">
+
+                        <!-- 스테이지 제목 -->
+
+                        <h1 id="stageOverlayTitle">
+                            Stage 1
+                        </h1>
+
+
+                        <!-- 스테이지 설명 -->
+
+                        <p
+                            id="stageOverlayDescription"
+                            class="hidden"
+                        >
+                            7명의 환자를 치료하세요.
+                        </p>
+
+
+                        <!-- 해금 아이템 표시 영역 -->
+
+                        <div
+                            id="stageUnlockArea"
+                            class="hidden"
+                        >
+                            <p id="stageUnlockLabel">
+                                새로운 치료 도구 해금!
+                            </p>
+
+                            <!--
+                            JS에서 해금된 아이템을 이 안에 생성한다.
+                            Last Stage에서는 선글라스와 AED가 나란히 표시된다.
+                            -->
+
+                            <div id="stageUnlockItems"></div>
+                        </div>
+
+
+                        <!-- 다음 스테이지 시작 버튼 -->
+
+                        <button
+                            id="stageContinueButton"
+                            class="hidden"
+                            type="button"
+                            aria-label="다음 스테이지 시작"
+                        >
+                            ▶
+                        </button>
+                        <button
+                            id="restartGameButton"
+                            class="hidden"
+                            type="button"
+                        >
+                            다시하기
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- 말풍선 -->
+
+                <section
+                    id="speechBubble"
+                    class="hidden"
+                    aria-live="polite"
+                >
+                    <p id="speechText"></p>
+                </section>
+
+
+                <!-- 식물 환자 -->
+                <button
+                    id="plant"
+                    type="button"
+                    aria-label="식물 환자와 대화하기"
+                >
+                    <!--
+                    치료 결과로 식물에게 씌우는 액세서리.
+
+                    기본 상태에서는 hidden 클래스 때문에 보이지 않고,
+                    선글라스 치료를 선택한 뒤 환자가 퇴장할 때만 표시된다.
+                    -->
+                    <img
+                        id="plantSunglasses"
+                        class="plantAccessory hidden"
+                        src="Pictures/Sunglasses.png"
+                        alt=""
+                        aria-hidden="true"
+                        draggable="false"
+                    >
+                </button>
+
+
+                <!-- 환자 후기 -->
+
+                <div
+                    id="patientReview"
+                    class="hidden"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- 개발자 디버그 패널 -->
+
+                <div
+                    id="debugPanel"
+                    class="hidden"
+                >
+
+                    <div>
+                        환자:
+
+                        <strong id="debugPatient">
+                            -
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        증상:
+
+                        <strong id="debugSymptoms">
+                            -
+                        </strong>
+                    </div>
+
+
+                    <div class="debugHelp">
+                        D 키: 디버그 창 표시/숨김
+                    </div>
+
+                </div>
+
+
+                <!-- 상태값 데이터 -->
+
+                <aside id="statusPanel">
+
+                    <div id="hpClip"></div>
+
+                    <div id="humidityClip"></div>
+
+                    <div id="temperatureClip"></div>
+
+                    <div id="boredomClip"></div>
+
+                </aside>
+
+
+                
+
+
+                <!-- 치료 체크리스트 열기 -->
+                
+                <button
+                    id="nextButton"
+                    type="button"
+                    disabled
+                >
+                    진료하기
+                </button>
+
+                <!-- =====================================
+                    중앙 하단 치료 완료 인원
+                ====================================== -->
+
+                <div
+                    id="centerPatientProgress"
+                    aria-live="polite"
+                >
+                    <span id="centerPatientProgressText">
+                        0 / 7
+                    </span>
+                </div>
+
+
+                <!-- =====================================
+                     치료 체크리스트
+                ====================================== -->
+
+                <div
+                    id="checklistOverlay"
+                    class="gameOverlay hidden"
+                    aria-hidden="true"
+                >
+
+                    <section
+                        id="checklistPaper"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="checklistTitle"
+                    >
+
+                        <h2 id="checklistTitle">
+                            치료 체크리스트
+                        </h2>
+
+
+                        <p id="checklistGuide">
+                            환자에게 필요한 치료를 모두 선택하세요.
+                        </p>
+
+
+                        <div id="treatmentList">
+
+
+                            <!-- 악기 구매 시 해금 -->
+
+                            <label
+                                class="
+                                    treatmentOption
+                                    lockedTreatment
+                                    hidden
+                                "
+                                data-treatment-unlock="instrument"
+                            >
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="music"
+                                    disabled
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    🎵 음악 들려주기
+                                </span>
+
+                            </label>
+
+
+                            <!-- 가위 구매 시 해금 -->
+
+                            <label
+                                class="
+                                    treatmentOption
+                                    lockedTreatment
+                                    hidden
+                                "
+                                data-treatment-unlock="scissors"
+                            >
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="prune"
+                                    disabled
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    ✂️ 가지치기
+                                </span>
+
+                            </label>
+
+
+                            <!-- 선글라스 구매 시 해금 -->
+
+                            <label
+                                class="
+                                    treatmentOption
+                                    lockedTreatment
+                                    hidden
+                                "
+                                data-treatment-unlock="sunglasses"
+                            >
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="sunglasses"
+                                    disabled
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    🕶️ 선글라스 씌워주기
+                                </span>
+
+                            </label>
+
+
+                            <!-- 물 주기 -->
+
+                            <label class="treatmentOption">
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="water"
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    💧 물 주기
+                                </span>
+
+                            </label>
+
+
+                            <!-- 쿨팩 -->
+
+                            <label class="treatmentOption">
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="cool"
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    🧊 쿨팩 대주기
+                                </span>
+
+                            </label>
+
+
+                            <!-- 온열매트 -->
+
+                            <label class="treatmentOption">
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="warm"
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    🔥 온열매트 위로 옮기기
+                                </span>
+
+                            </label>
+
+
+                            <!-- 영양제 -->
+
+                            <label class="treatmentOption">
+
+                                <input
+                                    type="checkbox"
+                                    name="treatment"
+                                    value="fertilizer"
+                                >
+
+                                <span class="customCheckbox"></span>
+
+                                <span class="treatmentName">
+                                    🧪 영양제 주기
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- 치료 판정 메시지 -->
+
+                        <p
+                            id="checklistMessage"
+                            aria-live="polite"
+                        ></p>
+
+
+                        <!-- 체크리스트 하단 버튼 -->
+
+                        <div id="checklistButtons">
+
+                            <button
+                                id="closeChecklistButton"
+                                type="button"
+                            >
+                                돌아가기
+                            </button>
+
+
+                            <button
+                                id="confirmTreatmentButton"
+                                type="button"
+                            >
+                                치료 결정
+                            </button>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- =====================================
+                     상점
+                ====================================== -->
+
+                <div
+                    id="shopOverlay"
+                    class="gameOverlay hidden"
+                    aria-hidden="true"
+                >
+
+                    <section
+                        id="shopPaper"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="shopTitle"
+                    >
+
+                        <h2 id="shopTitle">
+                            치료 도구 상점
+                        </h2>
+
+
+                        <p id="shopGuide">
+                            도구를 구매하면 새로운 치료법과 증상이 해금됩니다.
+                        </p>
+
+
+                        <div id="shopMoneyDisplay">
+
+                            보유 금액:
+
+                            <strong id="shopMoneyText">
+                                0 G
+                            </strong>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         모바일 세로 화면 안내
+    ====================================== -->
+
+    <div id="rotateNotice">
+
+        <div class="rotateIcon">
+            ↻
+        </div>
+
+        <p>
+            Dr.Plant는 가로 화면에 최적화되어 있습니다.
+            <br>
+            기기를 가로로 돌려주세요.
+        </p>
+
+    </div>
+
+
+    <script src="game.js"></script>
+
+</body>
+
+</html>
