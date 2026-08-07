@@ -437,11 +437,11 @@ const STAGE_INTRO_DURATION =
 /*
 과성장 환자 크기
 
-2.2 = 원래 환자 크기의 2.2배
+원래 환자 크기의 1.8배
 */
 
 const OVERGROWN_SCALE_MULTIPLIER =
-    2.2;
+    1.8;
 
 
 /*
@@ -454,40 +454,17 @@ animation-duration은 값이 커질수록 느려진다.
 const BOREDOM_SLOW_MULTIPLIER =
     2;
 
-
-/*
-지루함을 정확하게 치료했을 때는
-퇴장 애니메이션을 기본 속도의 2.5배 빠르게 한다.
-
-animation-duration을 2.5로 나누면 된다.
-*/
-
 const BOREDOM_RECOVERY_SPEED_MULTIPLIER =
     2.5;
 
-const COMPOSITE_SYMPTOM_CHANCE =
-    0.3;
-
-const MAX_SYMPTOMS =
-    2;
 
 const NORMAL_DIALOGUE_CHANCE =
     0.3;
 
 
-/*
-환자 전체 크기 배율
-
-1.5 = 원래 크기의 1.5배
-*/
-
 const PATIENT_SCALE_MULTIPLIER =
     1.5;
 
-
-/*
-1600px 화면 기준 이동 좌표
-*/
 
 const POSITION = {
 
@@ -503,9 +480,8 @@ const POSITION = {
 };
 
 
-/* =========================================================
-   MP3 음악 및 효과음
-========================================================= */
+//    MP3 음악 및 효과음
+
 
 const calmBGM =
     new Audio("Sounds/CalmBGM.mp3");
@@ -549,9 +525,9 @@ popSound.preload =
 popSound.load();
 
 
-/* =========================================================
-   환자 종류
-========================================================= */
+
+//    환자 종류
+
 
 const patientTypes = [
 
@@ -748,18 +724,13 @@ const patientTypes = [
 ];
 
 
-/* =========================================================
-   증상 종류
-========================================================= */
+//    증상 종류
 
 const symptoms = [
-
     {
-        id:
-            "dehydration",
+        id: "dehydration",
 
-        name:
-            "수분 부족",
+        name: "수분 부족",
 
         treatments: [
             "water"
@@ -769,16 +740,11 @@ const symptoms = [
             1,
 
         dialogues: [
-
             "목이 너무 말라요...",
-
             "흙이 바싹 말라버린 것 같아요.",
-
             "물을 마신 지 너무 오래됐어요...",
-
             "잎에 힘이 하나도 없어요.",
-
-            "흙이 점점 딱딱해지고 있어요..."
+            "저... 얼굴에 수분이 없어졌죠??"
         ]
     },
 
@@ -797,16 +763,13 @@ const symptoms = [
             1,
 
         dialogues: [
-
             "몸이 너무 뜨거워요...",
-
             "잎 끝이 뜨겁게 달아올랐어요.",
-
             "조금 시원한 곳으로 가고 싶어요.",
-
             "햇빛이 오늘따라 너무 따가워요.",
-
-            "몸에서 계속 열이 나는 기분이에요..."
+            "몸에서 계속 열이 나는 기분이에요...",
+            "옷은 없지만 옷을 벗고 싶은 날이네요.",
+            "선글라스라도 없나요? 너무 눈 부시게 뜨거운 날이야..."
         ]
     },
 
@@ -825,16 +788,13 @@ const symptoms = [
             1,
 
         dialogues: [
-
             "몸이 자꾸 덜덜 떨려요...",
-
             "뿌리까지 얼어붙는 것 같아요.",
-
             "조금 더 따뜻한 곳은 없나요?",
-
             "따뜻한 햇빛이 그리워요.",
-
-            "화분 안까지 너무 차가워졌어요."
+            "화분 안까지 너무 차가워졌어요.",
+            "벌써 겨울인가요? 아직 옷 준비를 안 했는데...",
+            "여기 히터 없나요?"
         ]
     },
 
@@ -853,16 +813,12 @@ const symptoms = [
             1,
 
         dialogues: [
-
-            "물을 마셔도 계속 기운이 없어요...",
-
+            "삶의 원동력이 없어요",
+            "뭘 먹어도 계속 기운이 없어요...",
             "요즘 새잎이 잘 자라지 않아요.",
-
             "몸에 필요한 게 부족한 것 같아요.",
-
             "잎 색이 전보다 옅어진 것 같아요.",
-
-            "충분히 쉬었는데도 힘이 없어요..."
+            "충분히 쉬었는데도... 힘이 안 나요..."
         ]
     },
 
@@ -1074,72 +1030,52 @@ const TYPING_SOUND_INTERVAL =
 ========================================================= */
 
 const arrivalDialogues = [
-
     "안녕하세요!",
-
     "안녕요...!",
-
     "잘 부탁드려요.",
-
     "오늘 진료 잘 부탁드릴게요.",
-
     "여기가 Dr.Plant 맞죠?",
-
     "선생님, 안녕하세요.",
-
-    "조금 긴장되네요..."
+    "조금 긴장되네요...",
+    "여기까지 오기는 싫었는데..."
 ];
 
-
+// 잡담
 const normalDialogues = [
 
     "오늘 날씨가 좋네요... 그죠?",
-
     "저 조금 긴장했어요.",
-
     "선생님은 식물을 좋아하세요?",
-
     "여기 병원 분위기가 신기하네요.",
-
     "요즘 어떻게 지내세요?",
-
     "저 잘 부탁드릴게요.",
-
-    "병원은 처음이라 신기해요."
+    "병원은 처음이라 신기해요.",
+    "제 주인이 저를 신경쓰지 않아서 여기 왔어요."
 ];
 
 
 const goodTreatmentReviews = [
-
     "이제 괜찮아졌어요!",
-
     "몸이 한결 가벼워졌어요!",
-
     "정확한 치료였어요. 감사합니다!",
-
     "다음에도 여기로 올게요!",
-
-    "선생님을 믿길 잘했어요!"
+    "선생님을 믿길 잘했어요!",
+    "상쾌해졌어요!"
 ];
 
 
 const badTreatmentReviews = [
-
     "기분이 많이 상했어요...",
-
     "이거 돌팔이 아니야?",
-
-    "전보다 더 아픈 것 같은데요...",
-
+    "전보다 더 아픈 것 같은데...",
     "정말 이 치료가 맞는 건가요?",
-
-    "다음에는 다른 병원에 갈래요."
+    "다음에는 다른 병원에 갈래요.",
+    "다신 여기 오나 봐라..."
 ];
 
 
-/* =========================================================
-   화면 비율
-========================================================= */
+
+//    화면 비율
 
 function resizeGameScreen() {
 
@@ -1277,14 +1213,7 @@ if (
     );
 }
 
-
-/* =========================================================
-   공통 함수
-========================================================= */
-
-/* =========================================================
-   현재 스테이지 설정 가져오기
-========================================================= */
+//    현재 스테이지 설정 가져오기
 
 function getCurrentStageConfig() {
 
@@ -1293,9 +1222,8 @@ function getCurrentStageConfig() {
     ];
 }
 
-/* =========================================================
-   스테이지 진행 표시
-========================================================= */
+
+//    스테이지 진행 표시
 
 function updateStageProgressUI() {
 
@@ -1432,18 +1360,11 @@ function showStageOverlay(
         "hidden"
     );
 }
-/* =========================================================
-   현재 AED 막대 속도 계산
-========================================================= */
+
 
 function getCurrentAedMarkerSpeed() {
 
-    /*
-    HP 0 ~ 39
 
-    아직 성공 전 또는
-    실패해서 다시 내려온 단계
-    */
 
     if (
         emergencyHp < 40
@@ -1452,12 +1373,6 @@ function getCurrentAedMarkerSpeed() {
         return AED_BASE_MARKER_SPEED;
     }
 
-
-    /*
-    HP 40 ~ 69
-
-    1회 성공 단계
-    */
 
     if (
         emergencyHp < 70
@@ -1471,13 +1386,7 @@ function getCurrentAedMarkerSpeed() {
     }
 
 
-    /*
-    HP 70 ~ 99
 
-    마지막 성공 직전 단계.
-
-    1.3 × 1.3 = 1.69배
-    */
 
     return (
         AED_BASE_MARKER_SPEED
@@ -1487,10 +1396,8 @@ function getCurrentAedMarkerSpeed() {
         AED_SPEED_MULTIPLIER
     );
 }
-/* =========================================================
-   게임 오버 화면 표시
-========================================================= */
 
+// 게임오버
 function showGameOverScreen(
     message
 ) {
@@ -1529,9 +1436,8 @@ function showGameOverScreen(
     );
 }
 
-/* =========================================================
-   해피 엔딩 화면 표시
-========================================================= */
+
+//    해피 엔딩 화면 표시
 
 function showHappyEndingScreen() {
 
@@ -1568,9 +1474,7 @@ function showHappyEndingScreen() {
         false;
 }
 
-/* =========================================================
-   스테이지 오버레이 숨김
-========================================================= */
+
 
 function hideStageOverlay() {
 
@@ -1579,9 +1483,6 @@ function hideStageOverlay() {
     );
 }
 
-/* =========================================================
-   스테이지 시작 안내 후 게임 시작
-========================================================= */
 
 async function startStage(
     stageNumber
@@ -1656,52 +1557,12 @@ async function startStage(
 
     updateStageProgressUI();
 
-
-    /*
-    예:
-    Stage 1
-    7명의 환자를 치료하세요.
-    */
-
     showStageOverlay(
 
         stageConfig.displayName,
 
-        `${stageConfig.patientTarget}명의 환자를 치료하세요.`
+        `${stageConfig.patientTarget}명의 환자를 치료하세요.\n(최대 ${stageConfig.symptomCount}개의 증상)`
     );
-    /* =========================================================
-    게임 오버 화면
-    ========================================================= */
-
-    function showGameOverScreen(
-        message
-    ) {
-
-        showStageOverlay(
-            "GAME OVER",
-            message
-        );
-
-
-        /*
-        일반 스테이지 진행 버튼은 숨기고
-        다시하기 버튼만 표시한다.
-        */
-
-        stageContinueButton.classList.add(
-            "hidden"
-        );
-
-
-        stageUnlockArea.classList.add(
-            "hidden"
-        );
-
-
-        restartGameButton.classList.remove(
-            "hidden"
-        );
-    }
 
 
     /*
@@ -1864,9 +1725,8 @@ function sleep(
 }
 
 
-/* =========================================================
-   MP3 재생 함수
-========================================================= */
+
+//    MP3 재생 함수
 
 function playSoundEffect(
     audio
@@ -1921,15 +1781,6 @@ function playSoundEffect(
     }
 }
 
-/* =========================================================
-   체크리스트 Pop 효과음
-
-   체크:
-   원래 음정
-
-   체크 해제:
-   조금 낮은 음정
-========================================================= */
 
 function playChecklistPopSound(
     isChecked
@@ -2032,9 +1883,7 @@ function startCalmBGM() {
    추가 효과음
 ========================================================= */
 
-/*
-치료하기 버튼 / AED 입력 효과음
-*/
+
 
 const treatButtonPopSound =
     new Audio(
@@ -2048,10 +1897,6 @@ treatButtonPopSound.preload =
 
 treatButtonPopSound.volume =
     0.65;
-
-    /* =========================================================
-   Stage Clear 효과음
-========================================================= */
 
 const stageClearSound =
     new Audio(
@@ -2068,9 +1913,6 @@ stageClearSound.volume =
 
 
 
-/* =========================================================
-   Game Clear 효과음
-========================================================= */
 
 const gameClearSound =
     new Audio(
@@ -2086,9 +1928,6 @@ gameClearSound.volume =
     0.75;
 
 
-/*
-게임 오버 효과음
-*/
 
 const gameoverSound =
     new Audio(
@@ -2103,11 +1942,6 @@ gameoverSound.preload =
 gameoverSound.volume =
     0.7;
 
-
-
-/*
-Last Stage 위급상황 경고음
-*/
 
 const emergencySound =
     new Audio(
@@ -2233,9 +2067,9 @@ async function preparePatientTypes() {
 }
 
 
-/* =========================================================
-   현재 스테이지에 등장 가능한 증상
-========================================================= */
+
+//    현재 스테이지에 등장 가능한 증상
+
 
 function getAvailableSymptoms() {
 
@@ -2329,11 +2163,6 @@ function unlockStageTreatment(
     unlockItems.forEach(
         unlockItem => {
 
-            /*
-            AED는 체크리스트에 들어가는
-            일반 치료법이 아니므로 제외한다.
-            */
-
             if (
                 !unlockItem.treatmentValue
             ) {
@@ -2414,11 +2243,6 @@ function showNextStageUnlockScreen(
         return;
     }
 
-
-    /*
-    게임 진행 정지
-    */
-
     stageActive =
         false;
 
@@ -2441,14 +2265,6 @@ function showNextStageUnlockScreen(
     hidePatientReview();
 
 
-    /*
-    다음에 시작할 스테이지 이름 표시
-
-    Stage 2
-    Stage 3
-    Last Stage
-    */
-
     stageOverlayTitle.textContent =
         nextStageConfig.displayName;
 
@@ -2462,20 +2278,9 @@ function showNextStageUnlockScreen(
     );
 
 
-    /*
-    기존 해금 아이템 초기화
-    */
-
     stageUnlockItems.innerHTML =
         "";
 
-
-    /*
-    Stage 2와 Stage 3은 unlockItem 한 개,
-    Last Stage는 unlockItems 여러 개를 사용한다.
-
-    두 형태를 하나의 배열로 통일한다.
-    */
 
     let unlockItems =
         [];
@@ -2500,10 +2305,6 @@ function showNextStageUnlockScreen(
         ];
     }
 
-
-    /*
-    해금 아이템 생성
-    */
 
     if (
         unlockItems.length > 0
@@ -2568,17 +2369,6 @@ function showNextStageUnlockScreen(
         );
     }
 
-    // else {
-
-    //     stageUnlockArea.classList.add(
-    //         "hidden"
-    //     );
-    // }
-
-
-    /*
-    다음 스테이지 시작 버튼 표시
-    */
 
     stageContinueButton.classList.remove(
         "hidden"
@@ -2589,19 +2379,10 @@ function showNextStageUnlockScreen(
         false;
 
 
-    /*
-    버튼이 시작해야 할 스테이지 번호 저장
-    */
-
     stageContinueButton.dataset.nextStage =
         String(
             nextStageNumber
         );
-
-
-    /*
-    전체 오버레이 표시
-    */
 
     stageOverlay.classList.remove(
         "hidden"
@@ -2639,7 +2420,7 @@ function createRandomSymptoms() {
 
     /*
     1개부터 현재 스테이지의 최대 증상 수까지
-    랜덤하게 결정한다.
+    랜덤하게 결정.
 
     Stage 1 → 1
     Stage 2 → 1~2
@@ -2901,9 +2682,6 @@ function applySymptomEffects(
     character
 ) {
 
-    /*
-    이전 환자의 증상 클래스를 제거한다.
-    */
 
     plant.classList.remove(
         "symptom-hot",
@@ -2919,12 +2697,6 @@ function applySymptomEffects(
         );
 
 
-    /*
-    반드시 캐릭터 원래 값에서 시작한다.
-
-    이전 환자의 크기와 애니메이션 속도가
-    다음 환자에게 남는 것을 방지한다.
-    */
 
     let patientScale =
         character.scale;
@@ -2935,8 +2707,7 @@ function applySymptomEffects(
 
 
     /*
-    고온 증상:
-    붉은 색조
+    고온 증상: 붉은 색조
     */
 
     if (
@@ -2952,8 +2723,7 @@ function applySymptomEffects(
 
 
     /*
-    저온 증상:
-    푸른 색조
+    저온 증상: 푸른 색조
     */
 
     if (
@@ -2969,8 +2739,7 @@ function applySymptomEffects(
 
 
     /*
-    영양 부족:
-    애니메이션 2배 느리게
+    영양 부족: 애니메이션 2배 느리게
 
     기존에 사용하던 효과를 유지한다.
     */
@@ -3007,7 +2776,7 @@ function applySymptomEffects(
 
     /*
     과성장:
-    식물 환자의 크기를 2.2배로 확대한다.
+    식물 환자의 크기를 1.8배로 확대한다.
     */
 
     if (
@@ -3030,29 +2799,15 @@ function applySymptomEffects(
         patientScale
     );
 
-
-    /*
-    계산된 애니메이션 속도를 적용한다.
-    */
-
     plant.style.setProperty(
         "--animation-speed",
         `${animationSpeed}s`
     );
 
 
-    /*
-    변경한 애니메이션 속도가 즉시 반영되도록
-    스프라이트 애니메이션을 재시작한다.
-    */
-
     restartPlantAnimation();
 
 }
-
-/* =========================================================
-   현재 환자가 특정 증상을 가지고 있는지 확인
-========================================================= */
 
 function currentPatientHasSymptom(
     symptomId
@@ -3096,11 +2851,6 @@ function applyTreatmentExitAnimation(
     }
 
 
-    /*
-    정확한 치료가 아니면
-    현재 증상 애니메이션을 그대로 유지한다.
-    */
-
     if (
         !isCorrect
     ) {
@@ -3108,11 +2858,6 @@ function applyTreatmentExitAnimation(
         return;
     }
 
-
-    /*
-    정확하게 치료했지만 지루함 증상이 없다면
-    별도의 속도 변화는 적용하지 않는다.
-    */
 
     if (
         !currentPatientHasSymptom(
@@ -3128,12 +2873,8 @@ function applyTreatmentExitAnimation(
     지루함을 정확하게 치료한 경우:
 
     환자의 원래 애니메이션 속도를
-    2.5로 나누어 빠르게 만든다.
+    2.5로 나누어 빠르게 만듦.
 
-    예:
-    기본 0.8초
-    → 0.8 / 2.5
-    → 0.32초
     */
 
     const recoveredAnimationSpeed =
@@ -4007,10 +3748,6 @@ function confirmTreatments() {
     }
 
 
-    /*
-    올바른 치료
-    */
-
     checklistMessage.style.color =
         "#24713a";
 
@@ -4054,10 +3791,6 @@ function confirmTreatments() {
             );
 
 
-            /*
-            현재 환자를 치료 완료한 것으로 기록
-            */
-
             treatedPatientCount +=
                 1;
 
@@ -4093,11 +3826,6 @@ function startPatient() {
 
 
     hidePatientReview();
-
-
-    /*
-    이전 환자의 선글라스 제거
-    */
 
     hidePlantSunglasses();
 
@@ -4300,7 +4028,6 @@ function sendPatientForStageClearCheck(
                     return;
                 }
 
-
                 if (
                     currentStage === 2
                 ) {
@@ -4311,6 +4038,7 @@ function sendPatientForStageClearCheck(
 
                     return;
                 }
+
                 if (
                     currentStage === 3
                 ) {
@@ -4321,11 +4049,18 @@ function sendPatientForStageClearCheck(
 
                     return;
                 }
+                return;
+            }
+            if (
+                currentStage === 4
+                &&
+                treatedPatientCount === 9
+            ) {
 
+                startEmergencyPatientEvent();
 
                 return;
             }
-
 
             startPatient();
         },
@@ -4355,17 +4090,8 @@ async function startEmergencyPatientEvent() {
     }
 
 
-    /*
-    위급 이벤트 상태 진입
-    */
-
     emergencyEventActive =
         true;
-
-
-    /*
-    일반 게임 진행을 완전히 멈춘다.
-    */
 
     stageActive =
         false;
@@ -4383,10 +4109,6 @@ async function startEmergencyPatientEvent() {
         true;
 
 
-    /*
-    기존 UI 숨기기
-    */
-
     closeChecklist();
 
 
@@ -4400,10 +4122,8 @@ async function startEmergencyPatientEvent() {
 
 
     /*
-    기존 환자 애니메이션 및 이동을 즉시 정지한다.
+    기존 환자 애니메이션 및 이동을 즉시 정지.
 
-    이전 환자가 경고 화면 뒤에 남거나
-    중앙으로 다시 들어오는 것을 막는다.
     */
 
     plant.style.transition =
@@ -4414,11 +4134,6 @@ async function startEmergencyPatientEvent() {
         "paused";
 
 
-    /*
-    기존 식물을 화면 오른쪽 바깥으로 완전히 치운다.
-    visibility:hidden을 사용하면 죽은 환자를 생성할 때
-    다시 visible로 복구해야 한다.
-    */
 
     plant.style.left =
         `${POSITION.RIGHT}px`;
@@ -4428,10 +4143,6 @@ async function startEmergencyPatientEvent() {
         "hidden";
 
 
-    /*
-    혹시 남아 있을 후기 텍스트도 화면 밖으로 이동
-    */
-
     patientReview.style.transition =
         "none";
 
@@ -4439,10 +4150,6 @@ async function startEmergencyPatientEvent() {
     patientReview.style.left =
         `${POSITION.RIGHT}px`;
 
-
-    /*
-    AED UI가 이전 실행에서 남아 있지 않도록 초기화
-    */
 
     stopAedMarkerAnimation();
 
@@ -4452,61 +4159,36 @@ async function startEmergencyPatientEvent() {
     );
 
 
-    /*
-    BGM 정지
-    */
-
     calmBGM.pause();
 
-    /*
-    위급상황 효과음
-    */
+  
 
     playSoundEffect(
         emergencySound
     );
 
 
-    /*
-    빨간 위급상황 경고 표시
-    */
-
-    emergencyWarning.classList.remove(
-        "hidden"
-    );
-
-    /*
-    빨간 위급 상황 경고 표시
-    */
 
     emergencyWarning.classList.remove(
         "hidden"
     );
 
 
-    /*
-    사이렌이나 경고 화면이 유지되는 시간.
+    emergencyWarning.classList.remove(
+        "hidden"
+    );
 
-    실제 사이렌 파일 길이에 맞춰 조절 가능.
-    */
 
     await sleep(
         1200
     );
 
 
-    /*
-    경고 화면 종료
-    */
-
     emergencyWarning.classList.add(
         "hidden"
     );
 
 
-    /*
-    경고가 끝난 뒤에만 죽은 환자를 생성한다.
-    */
 
     const emergencyCharacter =
 
@@ -4543,19 +4225,13 @@ async function startEmergencyPatientEvent() {
     };
 
 
-    /*
-    랜덤으로 선택된 식물 스프라이트 적용
-    */
+
 
     applyPatientSprite(
         currentPatient.character
     );
 
 
-    /*
-    applyPatientSprite()에서 바뀔 수 있는 상태를
-    죽은 환자 상태로 다시 덮어쓴다.
-    */
 
     plant.classList.remove(
         "symptom-hot",
@@ -4563,26 +4239,18 @@ async function startEmergencyPatientEvent() {
     );
 
 
-    /*
-    회색이고 어두운 죽은 식물처럼 표시
-    */
+
 
     plant.style.filter =
         "grayscale(1) brightness(0.48)";
 
 
-    /*
-    죽은 상태이므로 스프라이트 애니메이션 정지
-    */
 
     plant.style.animationPlayState =
         "paused";
 
 
-    /*
-    visibility를 다시 켜기 전에
-    왼쪽 화면 밖에 배치한다.
-    */
+
 
     plant.style.transition =
         "none";
@@ -4596,10 +4264,6 @@ async function startEmergencyPatientEvent() {
         "visible";
 
 
-    /*
-    브라우저가 시작 위치를 먼저 적용하도록
-    두 번의 requestAnimationFrame을 사용한다.
-    */
 
     await new Promise(
         resolve => {
@@ -4616,9 +4280,6 @@ async function startEmergencyPatientEvent() {
     );
 
 
-    /*
-    이제 죽은 환자만 왼쪽에서 중앙으로 들어온다.
-    */
 
     plant.style.transition =
 
@@ -4629,26 +4290,16 @@ async function startEmergencyPatientEvent() {
         `${POSITION.CENTER}px`;
 
 
-    /*
-    죽은 환자가 중앙에 도착할 때까지 대기
-    */
 
     await sleep(
         MOVE_DURATION
     );
 
 
-    /*
-    이동 완료
-    */
-
     isMoving =
         false;
 
 
-    /*
-    AED 미니게임 시작
-    */
 
     initializeAedMiniGame();
 }
@@ -4759,7 +4410,7 @@ function startAedMarkerAnimation() {
 
 
         /*
-        0~100 범위를 왕복한다.
+        0~100 범위를 왕복.
         */
 
         if (
@@ -4835,12 +4486,7 @@ function attemptAedSkillCheck() {
 
         return;
     }
-    /*
-    AED 입력 효과음
 
-    SPACE든 클릭이든
-    실제 판정이 발생하는 순간 재생
-    */
 
     playSoundEffect(
         treatButtonPopSound
@@ -4895,10 +4541,6 @@ function attemptAedSkillCheck() {
 
     else {
 
-        /*
-        HP가 이미 0인 상태에서 실패하면
-        즉시 사망 처리한다.
-        */
 
         if (
             emergencyHp <= 0
@@ -4926,10 +4568,7 @@ function attemptAedSkillCheck() {
     }
 
 
-    /*
-    짧은 입력 대기:
-    연타 방지
-    */
+
 
     window.setTimeout(
         () => {
@@ -4964,12 +4603,6 @@ async function finishAedSuccess() {
 
 
     updateEmergencyHpUI();
-    /*
-    게임 클리어 효과음
-
-    AED로 환자를 완전히 살린 순간
-    한 번만 재생한다.
-    */
 
     playSoundEffect(
         gameClearSound
@@ -4984,9 +4617,6 @@ async function finishAedSuccess() {
         "환자를 살렸습니다!";
 
 
-    /*
-    식물이 다시 살아난 모습
-    */
 
     plant.style.filter =
         "none";
@@ -5005,16 +4635,6 @@ async function finishAedSuccess() {
     restartPlantAnimation();
 
 
-    /*
-    현재 Last Stage 목표값으로 완료 처리
-
-    테스트:
-    2 / 2
-
-    정식:
-    10 / 10
-    */
-
     const stageConfig =
         getCurrentStageConfig();
 
@@ -5026,27 +4646,16 @@ async function finishAedSuccess() {
     updateStageProgressUI();
 
 
-    /*
-    환자가 살아난 모습을 잠깐 보여준다.
-    */
 
     await sleep(
         1500
     );
 
 
-    /*
-    AED UI 제거
-    */
-
     aedMiniGame.classList.add(
         "hidden"
     );
 
-
-    /*
-    해피엔딩 화면
-    */
 
     showHappyEndingScreen();
 
@@ -5110,9 +4719,6 @@ function finishAedFailure() {
 /* =========================================================
    게임 초기화
 ========================================================= */
-/* =========================================================
-   게임 처음부터 다시 시작
-========================================================= */
 
 async function restartGameFromBeginning() {
 
@@ -5148,10 +4754,6 @@ async function restartGameFromBeginning() {
     );
 
 
-    /*
-    게임 기본 상태
-    */
-
     gameOver =
         false;
 
@@ -5176,10 +4778,6 @@ async function restartGameFromBeginning() {
         0;
 
 
-    /*
-    각종 UI 닫기
-    */
-
     closeChecklist();
 
 
@@ -5199,10 +4797,6 @@ async function restartGameFromBeginning() {
         "hidden"
     );
 
-
-    /*
-    식물 시각 효과 초기화
-    */
 
     plant.style.filter =
         "";
@@ -5234,16 +4828,8 @@ async function restartGameFromBeginning() {
         `${POSITION.LEFT}px`;
 
 
-    /*
-    체크리스트 선택 초기화
-    */
-
     resetTreatmentSelections();
 
-
-    /*
-    Stage 2 이상에서 해금된 치료를 다시 잠근다.
-    */
 
     document
         .querySelectorAll(
@@ -5280,16 +4866,9 @@ async function restartGameFromBeginning() {
         );
 
 
-    /*
-    진행 UI도 Stage 1 / 0/7로 초기화
-    */
 
     updateStageProgressUI();
 
-
-    /*
-    BGM 처음부터 재생
-    */
 
     calmBGM.pause();
 
@@ -5301,26 +4880,12 @@ async function restartGameFromBeginning() {
     startCalmBGM();
 
 
-    /*
-    Stage 1부터 재시작
-
-    Stage 1
-    7명의 환자를 치료하세요.
-    → 1초
-    → 첫 환자
-    */
-
     await startStage(
         1
     );
 }
 
 async function initializeGame() {
-
-    /*
-    이미 초기화가 끝났다면
-    다시 환자를 생성하지 않는다.
-    */
 
     if (
         gameInitialized
@@ -5330,24 +4895,12 @@ async function initializeGame() {
     }
 
 
-    /*
-    식물 스프라이트 이미지의
-    전체 너비, 프레임 수 등을 먼저 계산한다.
-    */
-
     await preparePatientTypes();
 
     gameInitialized =
         true;
 
 
-    /*
-    Stage 1 시작:
-
-    1 Stage 표시
-    → 1초 대기
-    → 첫 환자 등장
-    */
 
     await startStage(
         1
@@ -5544,12 +5097,6 @@ stageContinueButton.addEventListener(
         );
 
 
-        /*
-        해금 화면을 숨기고,
-        Stage 2 / 8명의 환자를 치료하세요.
-        안내 화면을 다시 표시한다.
-        */
-
         hideStageOverlay();
 
 
@@ -5585,11 +5132,6 @@ restartGameButton.addEventListener(
 
 /* =========================================================
    START 버튼
-
-   START 클릭
-   → GameStart 효과음
-   → 게임 화면 전환
-   → CalmBGM 반복 재생
 ========================================================= */
 
 startButton.addEventListener(
@@ -5615,11 +5157,6 @@ startButton.addEventListener(
         startButton.textContent =
             "LOADING...";
 
-
-        /*
-        사용자가 직접 클릭했을 때 호출해야
-        브라우저 오디오 제한이 해제된다.
-        */
 
         getAudioContext();
 
@@ -5650,12 +5187,6 @@ startButton.addEventListener(
 
 
             await initializeGame();
-
-
-            /*
-            GameStart 효과음이 조금 들린 후
-            CalmBGM을 시작한다.
-            */
 
             window.setTimeout(
                 startCalmBGM,
@@ -5714,8 +5245,6 @@ startButton.addEventListener(
 
 /* =========================================================
    페이지 최초 실행
-
-   게임은 실행하지 않고 메인 화면 비율만 계산
 ========================================================= */
 
 if (
